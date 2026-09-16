@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Level 1: direct ownerId
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Level 1: authorId on the document itself
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == resource.data.authorId;
+    }
+
+    // Level 2: get() to another collection (membership check)
+    match /projects/{projectId} {
+      allow read, write: if request.auth != null &&
+        get(/databases/$(database)/documents/members/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Level 2: exists() instead of get() - only confirms membership, no field read
+    match /teams/{teamId}/private/{docId} {
+      allow read: if exists(/databases/$(database)/documents/teams/$(teamId)/members/$(request.auth.uid));
+    }
+
+    // Level 2: roles via list (hasAny / in)
+    match /admin_panel/{docId} {
+      allow read, write: if request.auth.token.roles.hasAny(['admin', 'moderator']);
+    }
+
+    // Level 2 "ugly": get() nested twice - the result of one get() is used
+    // to decide whether to make another get()
+    match /orgs/{orgId}/secrets/{secretId} {
+      allow read: if get(/databases/$(database)/documents/orgs/$(orgId)).data.ownerId == request.auth.uid
+        || get(/databases/$(database)/documents/orgs/$(orgId)/members/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Level 2: simple custom claim
+    match /billing/{docId} {
+      allow read: if request.auth.token.plan == 'pro';
+    }
+
+    // Level 3: shape validation
+    match /comments/{commentId} {
+      allow create: if request.resource.data.keys().hasOnly(['text', 'authorId', 'createdAt'])
+        && request.resource.data.text.size() < 500;
+    }
+  }
+}

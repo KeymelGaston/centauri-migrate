@@ -1,0 +1,26 @@
+{
+  "name": "centauri-rules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cli": "tsx src/cli.ts",
+    "test": "node --test core/rules/__tests__/rules.test.mjs core/extractor/__tests__/extractor.test.mjs core/inferrer/__tests__/inferrer.test.mjs core/migrator/__tests__/migrator.test.mjs && node --import tsx --test src/__tests__/init.test.ts src/__tests__/config-loader.test.ts src/__tests__/extract.test.ts src/__tests__/infer.test.ts src/__tests__/rules.test.ts src/__tests__/review.test.ts src/__tests__/migrate.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cel-js": "^0.8.2",
+    "firebase-admin": "^14.3.0",
+    "firetree": "^0.1.5",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.0",
+    "@types/pg": "^8.23.1",
+    "commander": "^15.0.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

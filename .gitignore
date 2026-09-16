@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+bower_components
+
+# TypeScript build output (this project runs via tsx, but a future `tsc`
+# build would land here)
+dist/
+build/Release
+lib-cov
+
+# Centauri's own config and generated state -- see centauri.config.example.json
+# for the fields to fill in instead of committing the real file.
+centauri.config.json
+centauri.e2e.config.json
+.centauri/
+.centauri-e2e/
+
+# Firestore/Postgres credentials -- NEVER commit these, regardless of what
+# path centauri.config.json points at.
+service-account.json
+*-service-account.json
+*.pem
+*.key
+
+# Environment variables (CENTAURI_POSTGRES_URL and friends) -- see
+# CENTAURI-DEV.md section 7: secrets only ever come from the environment,
+# never from a file that could get committed.
+.env
+.env.*
+!.env.example
+
+# Firebase cache and emulator logs
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
+# Firebase config
+# Uncomment this if you'd like others to create their own Firebase project.
+# For a team working on the same Firebase project(s), it is recommended to
+# leave it commented so all members can deploy to the same project(s) in
+# .firebaserc.
+.firebaserc
+
+# Firebase Data Connect generated files
+.dataconnect
+
+# Firebase agent-skills tooling artifacts (not part of Centauri itself)
+.agents/
+skills-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage / instrumentation
+coverage
+.nyc_output
+
+# Misc tooling
+.grunt
+.lock-wscript
+.npm
+.eslintcache
+.node_repl_history
+*.tgz
+.yarn-integrity
+
+# OS junk
+.DS_Store
+Thumbs.db

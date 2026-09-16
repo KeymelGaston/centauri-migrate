@@ -1,0 +1,7 @@
+{
+  "firestoreProjectId": "your-firebase-project-id",
+  "serviceAccountPath": "./service-account.json",
+  "outputDir": ".centauri",
+  "rulesFilePath": "firestore.rules",
+  "rlsDialect": "supabase"
+}
