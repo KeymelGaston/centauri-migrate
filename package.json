@@ -11,9 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "boxen": "^9.0.0",
     "cel-js": "^0.8.2",
+    "chalk": "^6.0.0",
+    "cli-table3": "^0.6.5",
     "firebase-admin": "^14.3.0",
     "firetree": "^0.1.5",
+    "ora": "^9.4.1",
     "pg": "^8.23.0"
   },
   "devDependencies": {
