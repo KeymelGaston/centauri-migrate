@@ -27,6 +27,43 @@ npm install
 
 Requires Node 20+. Uses [`tsx`](https://github.com/privatenumber/tsx) to run the TypeScript CLI directly — no build step needed for local use.
 
+## Command reference
+
+| Command | What it does | Key flags | Writes |
+|---|---|---|---|
+| `init` | Creates `centauri.config.json` (placeholders only) and the `.centauri/` state dir | `-f, --force` — overwrite an existing config | `centauri.config.json` |
+| `extract` | Walks the entire Firestore DB (collections + subcollections) into a local snapshot | `-c, --config <path>` (default `centauri.config.json`) | `.centauri/snapshot/` |
+| `infer` | Proposes a relational schema from that snapshot | `-c, --config <path>` | `.centauri/schema.proposed.json` |
+| `rules` | Translates `firestore.rules` into candidate RLS policies (Supabase + generic dialects) | `-c, --config <path>` | `.centauri/policies.proposed.json` |
+| `review` | Aggregates every low/medium-confidence decision from `infer` + `rules` into one report | `-c, --config <path>` | `.centauri/review.report.json` |
+| `migrate` | Creates tables and migrates data into Postgres | `-c, --config <path>` · `--apply` (real run, dry-run by default) · `-f, --force` (ignore existing checkpoint) | Real Postgres tables/rows (only with `--apply`) |
+
+Every command also accepts `-h, --help` for the same info from the terminal.
+
+**Running commands**: always invoke through `tsx`, not as a bare command —
+`centauri` isn't installed globally, so `migrate --apply` on its own won't
+resolve to anything. Use one of:
+
+```bash
+npx tsx src/cli.ts <command> [flags]      # recommended — most reliable everywhere
+npm run cli -- <command> [flags]          # equivalent, but see the Windows note below
+```
+
+> **Windows/PowerShell note**: `npm run cli -- <command> --flag` has been observed
+> silently dropping flags passed after `--` in some npm+PowerShell combinations
+> (the flag never reaches the script — you'll see it missing from npm's own
+> echoed command line). If a flag you passed doesn't seem to take effect,
+> switch to `npx tsx src/cli.ts <command> --flag` directly, which bypasses
+> npm's argument relay entirely.
+
+**Debugging a failure**: any command that throws prints a clean one-line
+error instead of a raw stack trace. Set `CENTAURI_DEBUG=1` to see the full
+stack trace when you need it:
+
+```bash
+CENTAURI_DEBUG=1 npx tsx src/cli.ts migrate --apply
+```
+
 ## Quick start
 
 ```bash
