@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "cli": "tsx src/cli.ts",
+    "build": "tsc",
+    "start": "node dist/src/cli.js",
     "test": "node --test core/rules/__tests__/rules.test.mjs core/extractor/__tests__/extractor.test.mjs core/inferrer/__tests__/inferrer.test.mjs core/migrator/__tests__/migrator.test.mjs && node --import tsx --test src/__tests__/init.test.ts src/__tests__/config-loader.test.ts src/__tests__/extract.test.ts src/__tests__/infer.test.ts src/__tests__/rules.test.ts src/__tests__/review.test.ts src/__tests__/migrate.test.ts"
   },
   "keywords": [],
@@ -15,6 +17,7 @@
     "cel-js": "^0.8.2",
     "chalk": "^6.0.0",
     "cli-table3": "^0.6.5",
+    "commander": "^15.0.0",
     "firebase-admin": "^14.3.0",
     "firetree": "^0.1.5",
     "ora": "^9.4.1",
@@ -23,7 +26,6 @@
   "devDependencies": {
     "@types/node": "^26.5.0",
     "@types/pg": "^8.23.1",
-    "commander": "^15.0.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }

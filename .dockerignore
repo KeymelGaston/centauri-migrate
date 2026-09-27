@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.centauri
+centauri.config.json
+*.env
+.env*
+*serviceAccount*.json
+*service-account*.json
+firestore.rules
+*.log

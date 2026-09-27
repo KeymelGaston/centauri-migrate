@@ -1,0 +1,33 @@
+# Local Postgres for testing `centauri migrate --apply` against a real
+# database, without needing a hosted instance (Supabase/Neon/RDS) just to
+# validate the CLI itself.
+#
+# Usage:
+#   docker compose up -d
+#   export CENTAURI_POSTGRES_URL="postgres://centauri:centauri@localhost:5433/centauri"
+#   npx tsx src/cli.ts migrate --apply
+#
+# To reset to a totally clean database (e.g. between test runs):
+#   docker compose down -v && docker compose up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: centauri-test-postgres
+    environment:
+      POSTGRES_USER: centauri
+      POSTGRES_PASSWORD: centauri
+      POSTGRES_DB: centauri
+    ports:
+      # Host port 5433 (not 5432) so this never collides with a Postgres
+      # you might already have running locally.
+      - "5433:5432"
+    volumes:
+      - centauri-test-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U centauri -d centauri"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  centauri-test-postgres-data:
